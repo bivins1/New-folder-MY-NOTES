@@ -2,6 +2,7 @@ import Navbar from "./component/Navbar"
 import Footer from "./component/Footer"
 import "./globals.css"
 import { Geist, Geist_Mono, Just_Another_Hand } from "next/font/google"
+import  AuthProvider  from "./component/AuthProvider"
 
 
 const geist = Geist({
@@ -28,15 +29,17 @@ export const metadata = {
 };
 
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, session }) {
   return (
     <html lang="en">
       <body
         className={`${justAnotherHand.className} ${geist.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar/>
-        {children}
-        <Footer/>
+        <AuthProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
