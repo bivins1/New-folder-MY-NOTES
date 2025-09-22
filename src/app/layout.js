@@ -38,7 +38,6 @@ export default function RootLayout({ children, session }) {
         <AuthProvider>
           <Navbar />
           {children}
-          <Footer />
         </AuthProvider>
       </body>
     </html>
