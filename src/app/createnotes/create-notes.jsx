@@ -7,6 +7,9 @@ import * as Yup from "yup";
 import { db } from '@/config/firebaseConfig';
 import { collection, addDoc } from "firebase/firestore";
 import { serverTimestamp } from "firebase/firestore";
+import { BiLoaderCircle } from "react-icons/bi";
+import Link from "next/link";
+
 
 
 function Createnote({ session }) {
@@ -27,26 +30,31 @@ function Createnote({ session }) {
     note: ""
   }
 
-  const handleSubmit = async (values, { resetForm }) => {
-    console.log(values);
+const handleSubmit = async (values, { resetForm }) => {
+  console.log(values);
 
-    try {
-      const noteDetails = {
-        author: session.user.name,
-        img: session.user.image,
-        timestamp: serverTimestamp(),
-        ...values
-      }
-      const docRef = await addDoc(collection(db, "notes"), noteDetails)
-      console.log("Document written with ID: ", docRef.id);
-      resetForm()
-    } catch (error) {
-      console.error("Error adding document: ", error);
-    } finally {
-      setDisplay(false)
-      setProcessing(false)
+  setProcessing(true); // start spinner immediately
+
+  try {
+    const noteDetails = {
+      authorId : session.user.uid,
+      author: session.user.name,
+      img: session.user.image,
+      timestamp: serverTimestamp(),
+      ...values
     }
+
+    const docRef = await addDoc(collection(db, "Mynotes"), noteDetails)
+    console.log("Document written with ID: ", docRef.id);
+    resetForm()
+    setDisplay(false) // hide modal after successful submission
+  } catch (error) {
+    console.error("Error adding document: ", error);
+  } finally {
+    setProcessing(false); // stop spinner no matter what
   }
+}
+
 
 
 
@@ -63,9 +71,12 @@ function Createnote({ session }) {
           </div>
 
           <div className="space-y-4 flex flex-col">
-            <button onClick={() => setDisplay(true)} className="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800 hover:text-white transition"> <FiPlus /> Create Notes </button>
-            <button className="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800 hover:text-white transition"> <FiTrash2 /> Trash </button>
-            <button className="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800 hover:text-white transition"> <FiFolder /> My Notes </button>
+            <button onClick={() => setDisplay(!display)} className="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800 hover:text-white transition"> <FiPlus /> Create Notes </button>
+             <button className="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800 hover:text-white transition"> <FiTrash2 /> Trash </button>
+
+             <Link href="/my-notes" >
+               <button className="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800 hover:text-white transition"> <FiFolder /> My Notes </button>
+             </Link>
           </div>
         </div>
 
@@ -77,8 +88,9 @@ function Createnote({ session }) {
       </aside>
 
       {display && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded shadow-lg w-11/12 md:w-1/2 lg:w-1/3">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 " onClick={() => setDisplay(false)}>
+          <div className="bg-white p-6 rounded shadow-lg w-11/12 md:w-1/2 lg:w-1/3" 
+          onClick={(e) => e.stopPropagation()}>
             <Formik initialValues={iv} validationSchema={formValidation} onSubmit={handleSubmit}>
               <Form className='space-y-5'>
                 <div className="flex flex-col gap-2">
@@ -90,9 +102,10 @@ function Createnote({ session }) {
                   <ErrorMessage name='note' component={"p"} className='text-xs text-red-600' />
                 </div>
 
-                <button type='submit' className='bg-amber-500 text-white w-full rounded-md p-2 hover:bg-gray-800 transition-all duration-200 flex items-center justify-center'>
+                <button type='submit' className='bg-amber-500 text-white w-full rounded-md p-2 hover:bg-gray-800 transition-all duration-200 flex items-center justify-center' 
+                disabled={processing}>
                   {
-                    processing ? <BiLoaderCircle className='animate-spin text-2xl text-white text-center' /> : "Post your Poem"
+                    processing ? <BiLoaderCircle className=' animate-spin text-2xl text-white text-center' /> : "Create Note"
                   }
                 </button>
               </Form>
