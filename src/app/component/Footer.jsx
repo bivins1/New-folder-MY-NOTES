@@ -1,3 +1,12 @@
+"use client";
+import React from "react";
+import Link from "next/link";
+import { FaGithub, FaTwitter, FaRegCopyright } from "react-icons/fa";
+import { signOut } from "next-auth/react";
+import { FaSignOutAlt } from "react-icons/fa";
+import { useSession } from "next-auth/react";
+
+
 const footerItems = [
   { label: "Home", url: "/" },
   { label: "About", url: "/about" },
@@ -6,20 +15,34 @@ const footerItems = [
 ];
 
 const linkClass =
-  "relative text-gray-800 text-3xl after:content-[''] after:absolute after:bottom-0 after:left-1/2 " +
+  "relative text-gray-800 text-2xl after:content-[''] after:absolute after:bottom-0 after:left-1/2 " +
   "after:w-0 after:h-[3px] after:bg-amber-500 after:transition-all after:duration-300 " +
   "hover:after:w-full hover:after:left-0";
 
 function Footer() {
+
+    const { data: session } = useSession();
   return (
-    <footer className="bg-amber-50 text-gray-800 border-t border-gray-300 mt-8 px-6 py-6">
+    <footer className="bg-amber-50 text-gray-800 border-t border-gray-300 px-6 py-6">
       <div className="flex flex-col items-start md:items-center md:flex-row md:justify-center gap-5 md:gap-8 ">
-          {footerItems.map((item, index) => (
-              <Link href={item.url}  key={index} className={linkClass}>
-                {item.label}
-              </Link>
-          ))}
-    
+        {footerItems.map((item, index) => (
+          <Link href={item.url} key={index} className={linkClass}>
+            {item.label}
+          </Link>
+        ))}
+        {!session ? (
+          null
+        ) : (
+          <button
+            onClick={() => signOut({ callbackUrl: "/" })}
+            className={`${linkClass} flex items-center gap-2`}
+          >
+            <FaSignOutAlt />
+            Sign Out
+          </button>
+        )}
+
+
       </div>
 
       <div className="flex justify-center items-center gap-6 mt-6">
