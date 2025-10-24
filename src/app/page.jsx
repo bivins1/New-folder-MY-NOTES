@@ -3,6 +3,7 @@ import Navbar from "./component/Navbar";
 import Image from "next/image";
 import { LuLaptopMinimal } from "react-icons/lu";
 import { GrNavigate } from "react-icons/gr";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -22,11 +23,12 @@ export default function Home() {
         <p> MY NOTES  is your personal space to capture thoughts, ideas, and inspirations. it's a note-taking app designed to give you a clean, minimalist experience.</p>
 
         <div className="mx-auto text-center">
-          <button
-            component="a" href="/auth/signin"
-            className="px-7 py-4 text-lg md:text-xl text-white text-center bg-gray-800 rounded-lg hover:bg-amber-500 transition-colors duration-200 shadow-md mt-5 ">
+          <Link
+            href="/auth/signin"
+            className="px-7 py-4 text-lg md:text-xl text-white text-center bg-gray-800 rounded-lg hover:bg-amber-500 transition-colors duration-200 shadow-md mt-5 inline-block"
+          >
             Get Started
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -40,7 +42,7 @@ export default function Home() {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-15 md:mt-55 mt-30">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-15 md:mt-55 mt-30 ">
         <div className="text-gray-800 font-bold text-3xl md:text-4xl text-center mb-10 md:mb-6">
           <h2>Why Choose My Notes?</h2>
         </div>
@@ -54,7 +56,7 @@ export default function Home() {
 
         </div>
         <div className="flex flex-col items-center justify-center space-y-2 ">
-          <div><GrNavigate  size={50} className="text-amber-500" /></div>
+          <div><GrNavigate size={50} className="text-amber-500" /></div>
           <div className="text-center">
             <h3 className="text-2xl font-semibold text-gray-800 mt-2">Intuitive Navigation</h3>
             <p className="text-gray-600 mt-1 text-2xl">Easily find and organize your notes with a user-friendly interface designed for efficiency.</p>

@@ -153,7 +153,7 @@ function Createnote() {
 
       <button
         onClick={() => setMenuOpen(!menuOpen)}
-        className="absolute top-4 left-4 md:hidden text-2xl text-amber-500"
+        className="absolute top-4 right-4 md:hidden text-2xl text-amber-500"
       >
         {menuOpen ? <FiX /> : <FiMenu />}
       </button>

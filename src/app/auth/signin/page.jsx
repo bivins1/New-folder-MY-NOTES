@@ -3,12 +3,18 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import { signIn } from "@/app/auth";
+import { redirect } from "next/navigation";
 import Navbar from "@/app/component/Navbar";
+import {auth} from "@/app/auth"
 
-const SignInPage = () => {
+const SignInPage = async () => {
+      const session = await auth()
+  console.log(session)
+        if(session){
+            redirect('/createnotes')
+        }
 
     return (
-
         <main className="h-dvh">
             <Navbar />
             <div className="flex items-center justify-center  md:py-16 py-10">

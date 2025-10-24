@@ -46,7 +46,7 @@ const Trash = () => {
     }
 
 
-    
+
 
 
 
@@ -78,8 +78,9 @@ const Trash = () => {
             <div className="flex-1 p-6 w-full">
                 {trashNotes.length === 0 ? (
                     <p className="text-gray-500 text-4xl">Trash is empty</p>
-                ) : (                    
-                    trashNotes.map(note => (
+                ) : (
+                    <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6">
+                        { trashNotes.map( (note) => (
                         <div key={note.id} className="rounded shadow-md flex flex-col p-4 justify-start">
                             <h2 className="text-2xl font-bold mb-2">{note.title}</h2>
                             <p className="text-gray-800">{note.note}</p>
@@ -93,7 +94,9 @@ const Trash = () => {
                             </span>
                         </div>
 
-                    ))
+                        ))}
+                    </div>
+
                 )}
             </div>
 
